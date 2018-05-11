@@ -15,7 +15,11 @@ var UserSchema = new Schema({
   var ReviewSchema = new Schema({
     user: { type: Schema.ObjectId, ref: UserSchema },
     postedOn: { type: Date, default: Date.now },
-    rating: { type: Number, required: true }, // TODO: validate between 1 and 5
+    rating: { 
+      type: Number, 
+      required: true,
+      min: [1, 'Rating must be between 1 and 5'],
+      max: [5, 'Rating must be between 1 and 5'] }, 
     review: String
   });
 
