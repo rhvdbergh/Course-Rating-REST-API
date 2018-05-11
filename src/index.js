@@ -3,8 +3,23 @@
 // load modules
 var express = require('express');
 var morgan = require('morgan');
+var mongoose = require('mongoose');
+
+var User = require('./models').User;
+var Review = require('./models').Review;
+var Course = require('./models').Course;
+
 
 var app = express();
+
+// set up mongoose connection
+mongoose.connect('mongodb://localhost/course_rating_api');
+var db = mongoose.connection;
+db.on('error', () => { console.log('There was an error connecting to the database.')});
+db.once('open', () => {
+  console.log('Database course_rating_api successfully connected.')
+});
+
 
 // set our port
 app.set('port', process.env.PORT || 5000);
