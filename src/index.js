@@ -9,10 +9,32 @@ var User = require('./models/user').User;
 var Review = require('./models/review').Review;
 var Course = require('./models/course').Course;
 
-var seeder = require('mais-mongoose-seeder')(mongoose),
-    data = require('./data/data.json');
+var seeder = require('mongoose-seed');
+var data = require('./data/data.json');
 
 var app = express();
+
+// Connect to MongoDB via Mongoose
+seeder.connect('mongodb://localhost/course_rating_api', function() {
+ 
+  // Load Mongoose models
+  seeder.loadModels([
+    './src/models/user.js',
+    './src/models/course.js',
+    './src/models/review.js'    
+  ]);
+ 
+  // Clear specified collections
+  seeder.clearModels(['User', 'Course', 'Review'], function() {
+ 
+    // Callback to populate DB once collections have been cleared
+    seeder.populateModels(data, function() {
+      seeder.disconnect();
+    });
+ 
+  });
+});
+
 
 // set up mongoose connection
 mongoose.connect('mongodb://localhost/course_rating_api');
@@ -21,11 +43,7 @@ db.on('error', () => { console.log('There was an error connecting to the databas
 db.once('open', () => {
   console.log('Database course_rating_api successfully connected.')
 
-  // seeder.seed(data).then(function(dbData) {
-  //   // The database objects are stored in dbData
-  // }).catch(function(err) {
-  //     // handle error
-  // });
+  
 
   
 

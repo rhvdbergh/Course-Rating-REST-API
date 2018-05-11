@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "mais-mongoose-seeder": "^1.0.5",
+    "mongoose-seed": "^0.4.1",
     "nodemon": "^1.9.1"
   },
   "dependencies": {

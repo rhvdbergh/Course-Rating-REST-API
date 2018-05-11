@@ -8,7 +8,7 @@ var UserSchema = require('./user.js');
 
   // Schema: Review
   var ReviewSchema = new Schema({
-    user: { type: Schema.ObjectId, ref: UserSchema },
+    user: { type: String }, // TODO: Schema.ObjectId, ref: UserSchema
     postedOn: { type: Date, default: Date.now },
     rating: { 
       type: Number, 
