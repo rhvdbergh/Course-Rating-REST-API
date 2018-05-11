@@ -5,10 +5,12 @@ var express = require('express');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 
-var User = require('./models').User;
-var Review = require('./models').Review;
-var Course = require('./models').Course;
+var User = require('./models/user').User;
+var Review = require('./models/review').Review;
+var Course = require('./models/course').Course;
 
+var seeder = require('mais-mongoose-seeder')(mongoose),
+    data = require('./data/data.json');
 
 var app = express();
 
@@ -18,7 +20,17 @@ var db = mongoose.connection;
 db.on('error', () => { console.log('There was an error connecting to the database.')});
 db.once('open', () => {
   console.log('Database course_rating_api successfully connected.')
+
+  // seeder.seed(data).then(function(dbData) {
+  //   // The database objects are stored in dbData
+  // }).catch(function(err) {
+  //     // handle error
+  // });
+
+  
+
 });
+
 
 
 // set our port
