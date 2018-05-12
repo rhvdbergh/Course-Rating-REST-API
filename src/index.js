@@ -42,14 +42,7 @@ var db = mongoose.connection;
 db.on('error', () => { console.log('There was an error connecting to the database.')});
 db.once('open', () => {
   console.log('Database course_rating_api successfully connected.')
-
-  
-
-  
-
 });
-
-
 
 // set our port
 app.set('port', process.env.PORT || 5000);
@@ -59,6 +52,10 @@ app.use(morgan('dev'));
 
 // setup our static route to serve files from the "public" folder
 app.use('/', express.static('public'));
+
+// set up api routes router
+const api_routes = require('./routes');
+app.use('/api', api_routes);
 
 // catch 404 and forward to global error handler
 app.use(function(req, res, next) {
