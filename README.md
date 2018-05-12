@@ -23,7 +23,7 @@ I am aiming for an "exceeds expectations" grade with this Treehouse project.
 - Review: _id (ObjectId, automatically generated), user (_id from the users collection), postedOn (Date, defaults to "now"), rating (Number, required, must be between 1 and 5), review (String)
 
 ## Seed
-- seed data available at src/data/data.json to work with the mongoose-seeder npm package
+- seed data available at src/data/data.json. (The Treehouse instructions suggests using the `mongoose-seeder` npm package, but this package does not work with Mongoose 5+. Rather, I used `mongoose-seed` and had to manipulate the seed data to work with this seeder)
 
 ## User routes
 - GET /api/users 200 - Returns the currently authenticated user
