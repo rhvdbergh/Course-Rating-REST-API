@@ -1,9 +1,29 @@
 const express = require('express');
 const router = express.Router(); // set up router
 
+const mongoose = require('mongoose');
+
+var User = require('../models/user');
+var Review = require('../models/review');
+var Course = require('../models/course');
+
+// do this for all requests
+router.use((req, res, next) => {
+    console.log('Request to API path received.');
+
+    next();
+});
+
 // GET /api/users 200
 router.get('/users', (req, res, next) => {
-
+    User.find().exec((err, users) => {
+        if (err) {
+            err.status = 500;
+            next(err);
+        }
+        console.log(users);
+        res.send(users);
+    });
 }); // end get users
 
 // POST /api/users 201
