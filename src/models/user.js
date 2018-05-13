@@ -24,7 +24,7 @@ var UserSchema = new Schema({
 
 // user authentication
 UserSchema.statics.authenticate = function(email, password, callback) {
-  User.findOne({email: email })
+  this.findOne({emailAddress: email })
       .exec(function(error, user){
         if (error) {
           return callback(error);
