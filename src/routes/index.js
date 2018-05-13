@@ -18,23 +18,20 @@ router.use((req, res, next) => {
         const err = new Error('No user authentication data received.');
         next(err); 
     } else {
-        req.body.userName = authUser.name;
-        req.body.userPass = authUser.pass;
+        User.authenticate(authUser.name, authUser.pass, function(err, user) {
+            if (err) {
+                err.status = 500;
+                next(err);
+            }
+            if (!user) { // no user was found
+                const err = new Error('User not found.');
+                err.status = 401;
+                next(err);
+            }
+            req.body.user = user;
+            next();
+        });
     }
-
-    User.authenticate(req.body.userName, req.body.userPass, function(err, user) {
-        if (err) {
-            err.status = 500;
-            next(err);
-        }
-        if (!user) { // no user was found
-            const err = new Error('User not found.');
-            err.status = 401;
-            next(err);
-        }
-        req.body.user = user;
-        next();
-    });
 });
 
 // GET /api/users 200
