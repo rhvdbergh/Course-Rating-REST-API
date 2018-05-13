@@ -11,9 +11,6 @@ var User = require('./models/user');
 var Review = require('./models/review');
 var Course = require('./models/course');
 
-var seeder = require('mongoose-seed');
-var data = require('./data/data.json');
-
 var app = express();
 
 // use sessions
@@ -24,29 +21,6 @@ app.use(session({
 // use bodyParser
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
-
-// TODO: seeder seems to bind models??? Seeder works fine, but then models
-// do not work properly in routes
-// Connect to MongoDB via Mongoose
-// seeder.connect('mongodb://localhost/course_rating_api', function() {
- 
-//   // Load Mongoose models
-//   seeder.loadModels([
-//     './src/models/user.js',
-//     './src/models/course.js',
-//     './src/models/review.js'    
-//   ]);
- 
-//   // Clear specified collections
-//   seeder.clearModels(['User', 'Course', 'Review'], function() {
- 
-//     // Callback to populate DB once collections have been cleared
-//     seeder.populateModels(data, function() {
-//       seeder.disconnect();
-//     });
- 
-//   });
-// });
 
 // set up mongoose connection
 mongoose.connect('mongodb://localhost/course_rating_api');
