@@ -89,13 +89,10 @@ router.get('/courses/:courseId', (req, res, next) => {
 
 // POST /api/courses 201
 router.post('/courses', (req, res, next) => {
-    console.log('Request to create new course received');
-    console.log('Req.body: ', req.body);
-
     Course.create({
         title: req.body.title,
         description: req.body.description,
-        user: req.body._id,
+        user: req.body.user,
         steps: req.body.steps
     }, function(err, course) {
         if (err) { 
@@ -118,6 +115,26 @@ router.post('/courses/:courseId/reviews', (req, res, next) => {
 // PUT /api/courses/:courseId 204
 router.put('/courses/:courseId', (req, res, next) => {
 
-}) // end put :courseId
+    Course.findById(req.params.courseId, function(err, course) {
+        if (err) {
+            next(err);
+        } else {
+            course.set({
+                title: req.body.title,
+                description: req.body.description,
+                user: req.body.user,
+                steps: req.body.steps
+            });
+            course.save(function (err, course) {
+                if (err) {
+                    next(err);
+                } else {
+                    res.status(204);
+                    res.end();
+                }
+            });
+        }
+    });
+}); // end put :courseId
 
 module.exports = router;
