@@ -49,7 +49,6 @@ router.post('/users', (req, res, next) => {
         password: req.body.password
     }, function(err, user) {
         if (err) { 
-            console.log('Error: ', err);
             next(err) 
         } else {
             console.log('New user created: ', req.body.fullName);
