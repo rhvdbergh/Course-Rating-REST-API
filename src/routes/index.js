@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router(); // set up router
+const auth = require('basic-auth');
 
 const mongoose = require('mongoose');
 
@@ -16,13 +17,22 @@ router.use((req, res, next) => {
 
 // GET /api/users 200
 router.get('/users', (req, res, next) => {
-    User.find().exec((err, users) => {
-        if (err) {
+
+    const user = auth(req);
+
+    console.log('User: ', user.name);
+    User.findOne({ emailAddress: user.name }, (err, user) => {
+        if (err) { // check for general errors and pass on
             err.status = 500;
             next(err);
         }
-        console.log(users);
-        res.send(users);
+
+        if (!user) { // no user was found
+            res.send('User not found.');
+        } else {
+            console.log(user);
+            res.send(user);
+        }
     });
 }); // end get users
 

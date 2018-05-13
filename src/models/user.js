@@ -10,7 +10,7 @@ function validateEmail(email) {
   return regEx.test(email);
 };
 
-// Schema: User
+// Schema: User 
 var UserSchema = new Schema({
     fullName: { type: String, required: true },
     emailAddress: { 

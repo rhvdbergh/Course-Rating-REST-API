@@ -5,6 +5,7 @@ var express = require('express');
 var session = require('express-session');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 var User = require('./models/user');
 var Review = require('./models/review');
@@ -19,6 +20,9 @@ var app = express();
 app.use(session({
   secret: 'no_secrets_here'
 }));
+
+// use bodyParser
+app.use(bodyParser.urlencoded());
 
 // TODO: seeder seems to bind models??? Seeder works fine, but then models
 // do not work properly in routes
