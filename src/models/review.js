@@ -4,11 +4,11 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var UserSchema = require('./user.js');
+// var User = require('./user.js');
 
   // Schema: Review
   var ReviewSchema = new Schema({
-    user: { type: Schema.ObjectId, ref: UserSchema }, 
+    user: { type: Schema.Types.ObjectId, ref: 'User' }, 
     postedOn: { type: Date, default: Date.now },
     rating: { 
       type: Number, 

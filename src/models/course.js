@@ -9,7 +9,7 @@ var Review = require('./review.js');
 
   // Schema: Course
   var CourseSchema = new Schema({ 
-    user: { type: Schema.ObjectId, ref: User }, 
+    user: { type: Schema.Types.ObjectId, ref: 'User' }, 
     title: { type: String, required: true },
     description: { type: String, required: true },
     estimatedTime: String,
@@ -19,7 +19,7 @@ var Review = require('./review.js');
       title: { type: String, required: true }, 
       description: { type: String, required: true } 
     }], // array of objects
-    reviews: [{ type: Schema.ObjectId, ref: Review }] 
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }] 
   });
 
 module.exports = mongoose.model("Course", CourseSchema);;

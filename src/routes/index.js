@@ -61,12 +61,12 @@ router.post('/users', (req, res, next) => {
 // GET /api/courses 200
 router.get('/courses', (req, res, next) => {
 
-    Course.find({}, '_id title')
-        .exec(function(err, course) {
+    Course.find({}, 'title')
+        .exec(function(err, courses) {
             if (err) {
                 next(err);
             } else {
-                res.json(course);
+                res.json(courses);
             }
         })
 
@@ -75,6 +75,15 @@ router.get('/courses', (req, res, next) => {
 // GET /api/courses/:courseId 200
 router.get('/courses/:courseId', (req, res, next) => {
 
+    Course.findOne({ _id: req.params.courseId })
+        .populate('user reviews')
+        .exec(function(err, course) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(course);
+            }
+        })
 }); // end get :courseId
 
 // POST /api/courses 201
