@@ -18,22 +18,25 @@ router.use((req, res, next) => {
 // GET /api/users 200
 router.get('/users', (req, res, next) => {
 
-    const user = auth(req);
+    const authUser = auth(req);
 
-    console.log('User: ', user.name);
-    User.findOne({ emailAddress: user.name }, (err, user) => {
-        if (err) { // check for general errors and pass on
-            err.status = 500;
-            next(err);
-        }
+    if (authUser) {
 
-        if (!user) { // no user was found
-            res.send('User not found.');
-        } else {
-            console.log(user);
-            res.send(user);
-        }
-    });
+        User.findOne({ emailAddress: authUser.name }, (err, user) => {
+            if (err) { // check for general errors and pass on
+                err.status = 500;
+                next(err);
+            }
+
+            if (!user) { // no user was found
+                res.send('User not found.');
+            } else {
+                res.send(user);
+            }
+        }); // end User.findOne
+    } else { // end if user
+        res.send('User not authenticated.');
+    }
 }); // end get users
 
 // POST /api/users 201
