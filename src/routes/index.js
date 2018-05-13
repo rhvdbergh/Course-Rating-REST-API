@@ -111,19 +111,36 @@ router.post('/courses', (req, res, next) => {
 // POST /api/courses/:courseId/reviews 201
 router.post('/courses/:courseId/reviews', (req, res, next) => {
 
-    // Review.create({
-    //     user: 
-    // });
-
-    // user: { type: Schema.Types.ObjectId, ref: 'User' }, 
-    // postedOn: { type: Date, default: Date.now },
-    // rating: { 
-    //   type: Number, 
-    //   required: true,
-    //   min: [1, 'Rating must be between 1 and 5'],
-    //   max: [5, 'Rating must be between 1 and 5'] }, 
-    // review: String
-
+    Review.create({
+        user: req.body.user._id,
+        rating: req.body.rating,
+        review: req.body.review
+    }, function(err, review) {
+        if (err) {
+            next(err)
+        } else {
+            console.log('New review created.');
+            // now link the review to the course
+            Course.findById(req.params.courseId, function(err, course) {
+                if (err) {
+                    next(err)
+                } else {
+                    course.set({
+                        reviews: [...course.reviews, review]
+                    });
+                    course.save(function(err, course) {
+                        if (err) {
+                            next(err);
+                        } else {
+                            res.location(`/api/courses/${req.params.courseId}`);
+                            res.status(201);
+                            res.end();
+                        }
+                    });
+                }
+            }); // end Course.findById
+        }
+    }); // end Review.create
 }); // end post reviews
 
 // PUT /api/courses/:courseId 204
