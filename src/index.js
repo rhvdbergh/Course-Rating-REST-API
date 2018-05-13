@@ -23,6 +23,7 @@ app.use(session({
 
 // use bodyParser
 app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 
 // TODO: seeder seems to bind models??? Seeder works fine, but then models
 // do not work properly in routes

@@ -43,6 +43,20 @@ router.get('/users', (req, res, next) => {
 // POST /api/users 201
 router.post('/users', (req, res, next) => {
 
+    User.create({ 
+        fullName: req.body.fullName,
+        emailAddress: req.body.emailAddress,
+        password: req.body.password
+    }, function(err, user) {
+        if (err) { 
+            console.log('Error: ', err);
+            next(err) 
+        } else {
+            console.log('New user created: ', req.body.fullName);
+            res.redirect('/');
+        }
+    });
+
 }); // end post users
 
 // GET /api/courses 200
