@@ -52,7 +52,8 @@ router.post('/users', (req, res, next) => {
             next(err) 
         } else {
             console.log('New user created: ', req.body.fullName);
-            res.redirect('/');
+            res.location('/');
+            res.end();
         }
     });
 
@@ -88,6 +89,24 @@ router.get('/courses/:courseId', (req, res, next) => {
 
 // POST /api/courses 201
 router.post('/courses', (req, res, next) => {
+    console.log('Request to create new course received');
+    console.log('Req.body: ', req.body);
+
+    Course.create({
+        title: req.body.title,
+        description: req.body.description,
+        user: req.body._id,
+        steps: req.body.steps
+    }, function(err, course) {
+        if (err) { 
+            next(err) 
+        } else {
+            console.log('New course created: ', course.title);
+            res.location(`/api/courses/${course._id}`);
+            res.status(201);
+            res.end();
+        }
+    });
 
 }); // end post courses
 
