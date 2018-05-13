@@ -49,7 +49,7 @@ router.post('/users', (req, res, next) => {
         password: req.body.password
     }, function(err, user) {
         if (err) { 
-            next(err) 
+            next(err);
         } else {
             console.log('New user created: ', req.body.fullName);
             res.location('/');
@@ -99,7 +99,7 @@ router.post('/courses', (req, res, next) => {
         steps: req.body.steps
     }, function(err, course) {
         if (err) { 
-            next(err) 
+            next(err); 
         } else {
             console.log('New course created: ', course.title);
             res.location(`/api/courses/${course._id}`);
