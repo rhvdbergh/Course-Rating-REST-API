@@ -4,8 +4,6 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-// var User = require('./user.js');
-
   // Schema: Review
   var ReviewSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User' }, 
