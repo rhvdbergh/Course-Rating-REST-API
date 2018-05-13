@@ -8,36 +8,40 @@ var User = require('../models/user');
 var Review = require('../models/review');
 var Course = require('../models/course');
 
-// do this for all requests
+// authenticate user for all requests
 router.use((req, res, next) => {
     console.log('Request to API path received.');
-
-    next();
-});
-
-// GET /api/users 200
-router.get('/users', (req, res, next) => {
 
     const authUser = auth(req);
 
     if (!authUser) { // no authentication data received
         const err = new Error('No user authentication data received.');
-        next(err);
+        next(err); 
     } else {
-        User.authenticate(authUser.name, authUser.pass, function(err, user) {
-            if (err) {
-                err.status = 500;
-                next(err);
-            }
-            if (!user) { // no user was found
-                const err = new Error('User not found');
-                err.status = 401;
-                next(err);
-            } else {
-                res.send(user);
-            }
-        });
-    } // end else
+        req.body.userName = authUser.name;
+        req.body.userPass = authUser.pass;
+    }
+
+    User.authenticate(req.body.userName, req.body.userPass, function(err, user) {
+        if (err) {
+            err.status = 500;
+            next(err);
+        }
+        if (!user) { // no user was found
+            const err = new Error('User not found.');
+            err.status = 401;
+            next(err);
+        }
+        req.body.user = user;
+        next();
+    });
+});
+
+// GET /api/users 200
+router.get('/users', (req, res, next) => {
+
+    res.json(req.body.user);
+
 }); // end get users
 
 // POST /api/users 201
@@ -109,6 +113,19 @@ router.post('/courses', (req, res, next) => {
 
 // POST /api/courses/:courseId/reviews 201
 router.post('/courses/:courseId/reviews', (req, res, next) => {
+
+    // Review.create({
+    //     user: 
+    // });
+
+    // user: { type: Schema.Types.ObjectId, ref: 'User' }, 
+    // postedOn: { type: Date, default: Date.now },
+    // rating: { 
+    //   type: Number, 
+    //   required: true,
+    //   min: [1, 'Rating must be between 1 and 5'],
+    //   max: [5, 'Rating must be between 1 and 5'] }, 
+    // review: String
 
 }); // end post reviews
 
