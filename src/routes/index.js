@@ -61,7 +61,15 @@ router.post('/users', (req, res, next) => {
 // GET /api/courses 200
 router.get('/courses', (req, res, next) => {
 
-    res.send('courses');
+    Course.find({}, '_id title')
+        .exec(function(err, course) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(course);
+            }
+        })
+
 }); // end get courses
 
 // GET /api/courses/:courseId 200
