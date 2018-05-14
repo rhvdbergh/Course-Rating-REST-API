@@ -20,7 +20,6 @@ router.use((req, res, next) => {
     } else {
         User.authenticate(authUser.name, authUser.pass, function(err, user) {
             if (err) {
-                err.status = 500;
                 next(err);
             }
             if (!user) { // no user was found
