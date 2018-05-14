@@ -16,6 +16,7 @@ router.use((req, res, next) => {
 
     if (!authUser) { // no authentication data received
         const err = new Error('No user authentication data received.');
+        err.status = 400;
         next(err); 
     } else {
         User.authenticate(authUser.name, authUser.pass, function(err, user) {
