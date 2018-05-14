@@ -24,7 +24,7 @@ router.use((req, res, next) => {
                 next(err);
             }
             if (!user) { // no user was found
-                const err = new Error('User not found.');
+                const err = new Error('User not found. Please authenticate with a different user or create new user.');
                 err.status = 401;
                 next(err);
             }
