@@ -2,7 +2,6 @@
 
 // load modules
 var express = require('express');
-var session = require('express-session');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
@@ -12,11 +11,6 @@ var Review = require('./models/review');
 var Course = require('./models/course');
 
 var app = express();
-
-// use sessions
-app.use(session({
-  secret: 'no_secrets_here'
-}));
 
 // use bodyParser
 app.use(bodyParser.urlencoded());
