@@ -111,20 +111,21 @@ router.post('/courses', (req, res, next) => {
 // POST /api/courses/:courseId/reviews 201
 router.post('/courses/:courseId/reviews', (req, res, next) => {
 
-    Review.create({
-        user: req.body.user._id,
-        rating: req.body.rating,
-        review: req.body.review
-    }, function(err, review) {
+    // test to see if the course exists
+    Course.findById(req.params.courseId, function(err, course) {
         if (err) {
             next(err)
         } else {
-            console.log('New review created.');
-            // now link the review to the course
-            Course.findById(req.params.courseId, function(err, course) {
+            Review.create({
+                user: req.body.user._id,
+                rating: req.body.rating,
+                review: req.body.review
+            }, function(err, review) {
                 if (err) {
                     next(err)
                 } else {
+                    console.log('New review created.');
+                    // now associate the review with the course
                     course.set({
                         reviews: [...course.reviews, review]
                     });
@@ -138,9 +139,9 @@ router.post('/courses/:courseId/reviews', (req, res, next) => {
                         }
                     });
                 }
-            }); // end Course.findById
+            }); // end Review.create
         }
-    }); // end Review.create
+    }); // end Course.findById
 }); // end post reviews
 
 // PUT /api/courses/:courseId 204
