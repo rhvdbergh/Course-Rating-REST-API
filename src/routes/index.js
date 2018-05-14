@@ -52,6 +52,7 @@ router.post('/users', (req, res, next) => {
             next(err);
         } else {
             console.log('New user created: ', req.body.fullName);
+            res.status(201);
             res.location('/');
             res.end();
         }
