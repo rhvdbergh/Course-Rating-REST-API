@@ -48,6 +48,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   if (err.name === 'ValidationError') {
     res.status(400);
+    res.json(err);
   } else {
     res.status(err.status || 500);
   }
