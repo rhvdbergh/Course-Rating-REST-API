@@ -9,7 +9,7 @@ var Review = require('../models/review');
 var Course = require('../models/course');
 
 // authenticate user for all requests
-router.use((req, res, next) => {
+const authenticate = (req, res, next) => {
     console.log('Request to API path received.');
 
     const authUser = auth(req);
@@ -32,10 +32,10 @@ router.use((req, res, next) => {
             next();
         });
     }
-});
+};
 
 // GET /api/users 200
-router.get('/users', (req, res, next) => {
+router.get('/users', authenticate, (req, res, next) => {
 
     res.json(req.body.user);
 
