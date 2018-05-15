@@ -90,7 +90,7 @@ router.get('/courses/:courseId', (req, res, next) => {
 }); // end get :courseId
 
 // POST /api/courses 201
-router.post('/courses', (req, res, next) => {
+router.post('/courses', authenticate, (req, res, next) => {
     Course.create({
         title: req.body.title,
         description: req.body.description,
@@ -110,7 +110,7 @@ router.post('/courses', (req, res, next) => {
 }); // end post courses
 
 // POST /api/courses/:courseId/reviews 201
-router.post('/courses/:courseId/reviews', (req, res, next) => {
+router.post('/courses/:courseId/reviews', authenticate, (req, res, next) => {
 
     // test to see if the course exists
     Course.findById(req.params.courseId, function(err, course) {
@@ -146,10 +146,14 @@ router.post('/courses/:courseId/reviews', (req, res, next) => {
 }); // end post reviews
 
 // PUT /api/courses/:courseId 204
-router.put('/courses/:courseId', (req, res, next) => {
+router.put('/courses/:courseId', authenticate, (req, res, next) => {
 
     Course.findById(req.params.courseId, function(err, course) {
         if (err) {
+            next(err);
+        } else if (!course) {
+            const err = new Error('Course does not exist');
+            err.status = 400;
             next(err);
         } else {
             course.set({
