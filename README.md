@@ -7,11 +7,10 @@ In this project, you’ll create a REST API using Express. The API will provide 
 
 To complete this project, you’ll use your knowledge of REST API design, Node.js, and Express to create API routes, along with Mongoose and MongoDB for data modeling, validation, and persistence.
 
-# Extra credit
-I am aiming for an "exceeds expectations" grade with this Treehouse project.
-- Validation will be added to prevent users from rating their own course.
-- Tests that requests to GET api/users with the correct credentials returns a corresponding user document, and with invalid credentials, a 401 status error is returned
-- A single course returned through GET /api/courses/:courseId will through Mongoose deep population return only the fullName of the user on the course model and each review returned with the course model. 
+# Installation and running instructions 
+1) Run `npm install` from the command line
+2) From the root directory, run `node src/seed.js` if the database is to be seeded
+3) Run `npm start` from the root directory
 
 # Requirements
 ## Database
@@ -23,7 +22,7 @@ I am aiming for an "exceeds expectations" grade with this Treehouse project.
 - Review: _id (ObjectId, automatically generated), user (_id from the users collection), postedOn (Date, defaults to "now"), rating (Number, required, must be between 1 and 5), review (String)
 
 ## Seed
-- seed data available at src/data/data.json. (The Treehouse instructions suggests using the `mongoose-seeder` npm package, but this package does not work with Mongoose 5+. Rather, I used `mongoose-seed` and had to manipulate the seed data to work with this seeder)
+- seed data available at src/data/data.json. (The Treehouse instructions suggests using the `mongoose-seeder` npm package, but this package does not work with Mongoose 5+. Rather, I used `mongoose-seed` and had to manipulate the seed data to work with this seeder). To seed the database, please run `node src/seed.js`
 
 ## User routes
 - GET /api/users 200 - Returns the currently authenticated user
