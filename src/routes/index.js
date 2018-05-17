@@ -91,12 +91,19 @@ router.get('/courses/:courseId', (req, res, next) => {
 
 // POST /api/courses 201
 router.post('/courses', authenticate, (req, res, next) => {
-    Course.create({
+
+    let updateFields = {
         title: req.body.title,
         description: req.body.description,
-        user: req.body.authenticatedUser._id,
         steps: req.body.steps
-    }, function(err, course) {
+    };
+
+    // if no user is supplied, use the authenticated user as
+    // the user associated with the course
+    if (req.body.user) { updateFields.user = req.body.user } 
+    else { updateFields.user = req.body.authenticatedUser._id }
+
+    Course.create(updateFields, function(err, course) {
         if (err) { 
             next(err); 
         } else {
@@ -120,13 +127,9 @@ router.post('/courses/:courseId/reviews', authenticate, (req, res, next) => {
 
             let updateFields = {
                 rating: req.body.rating,
-                review: req.body.review
+                review: req.body.review,
+                user: req.body.authenticatedUser._id
             };
-
-            // if no user is supplied, use the authenticated user as
-            // the user associated with the course
-            if (req.body.user) { updateFields.user = req.body.user } 
-            else { updateFields.user = req.body.authenticatedUser._id }
 
             Review.create(updateFields, function(err, review) {
                 if (err) {
