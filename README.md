@@ -11,6 +11,7 @@ To complete this project, you’ll use your knowledge of REST API design, Node.j
 1) Run `npm install` from the command line
 2) From the root directory, run `node src/seed.js` if the database is to be seeded
 3) Run `npm start` from the root directory
+NOTE: Latest version of Node.js tested was 8.10.0 - you might need to downgrade to this version
 
 # Requirements
 ## Database
