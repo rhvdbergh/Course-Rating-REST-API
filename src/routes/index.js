@@ -156,12 +156,15 @@ router.put('/courses/:courseId', authenticate, (req, res, next) => {
             err.status = 400;
             next(err);
         } else {
-            course.set({
-                title: req.body.title,
-                description: req.body.description,
-                user: req.body.user,
-                steps: req.body.steps
-            });
+            // only update fields that have been entered by user and passed
+            // through the req.body
+            let updateFields = {};
+            if (req.body.title) { updateFields.title = req.body.title };
+            if (req.body.description) { updateFields.description = req.body.description }
+            if (req.body.steps) { updateFields.steps = req.body.steps }
+
+            course.set(updateFields);
+            
             course.save(function (err, course) {
                 if (err) {
                     next(err);
