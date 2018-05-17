@@ -28,7 +28,7 @@ const authenticate = (req, res, next) => {
                 err.status = 401;
                 next(err);
             }
-            req.body.user = user;
+            req.body.authenticatedUser = user;
             next();
         });
     }
@@ -37,7 +37,7 @@ const authenticate = (req, res, next) => {
 // GET /api/users 200
 router.get('/users', authenticate, (req, res, next) => {
 
-    res.json(req.body.user);
+    res.json(req.body.authenticatedUser);
 
 }); // end get users
 
@@ -94,7 +94,7 @@ router.post('/courses', authenticate, (req, res, next) => {
     Course.create({
         title: req.body.title,
         description: req.body.description,
-        user: req.body.user,
+        user: req.body.authenticatedUser._id,
         steps: req.body.steps
     }, function(err, course) {
         if (err) { 
@@ -117,11 +117,18 @@ router.post('/courses/:courseId/reviews', authenticate, (req, res, next) => {
         if (err) {
             next(err)
         } else {
-            Review.create({
-                user: req.body.user._id,
+
+            let updateFields = {
                 rating: req.body.rating,
                 review: req.body.review
-            }, function(err, review) {
+            };
+
+            // if no user is supplied, use the authenticated user as
+            // the user associated with the course
+            if (req.body.user) { updateFields.user = req.body.user } 
+            else { updateFields.user = req.body.authenticatedUser._id }
+
+            Review.create(updateFields, function(err, review) {
                 if (err) {
                     next(err)
                 } else {
@@ -164,7 +171,7 @@ router.put('/courses/:courseId', authenticate, (req, res, next) => {
             if (req.body.steps) { updateFields.steps = req.body.steps }
 
             course.set(updateFields);
-            
+
             course.save(function (err, course) {
                 if (err) {
                     next(err);
